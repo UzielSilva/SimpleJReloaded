@@ -141,7 +141,7 @@ public class Interpreter {
         try {
             Reader reader =
                 new InputStreamReader(getClass().getResourceAsStream(
-                        "/com.simplej.language/builtin/_builtin_utils.sj"));
+                        "/com/simplej/language/builtin/_builtin_utils.sj"));
             reader = new BufferedReader(reader);
             SimpleJCode code =
                 com.simplej.language.compiler.Compiler.compileProgram(reader,

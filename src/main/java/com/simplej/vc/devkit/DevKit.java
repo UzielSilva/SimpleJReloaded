@@ -327,7 +327,7 @@ public class DevKit extends JFrame implements ExceptionHandler, ViewerEnv {
         if (filename.equals("_builtin_utils.sj"))
             reader =
               new InputStreamReader(getClass().getResourceAsStream(
-                      "/com.simplej.language/builtin/_builtin_utils.sj"));
+                      "/com/simplej/language/builtin/_builtin_utils.sj"));
         else if (filename.equals("_iavc_utils.sj"))
             reader =
               new InputStreamReader(getClass().getResourceAsStream(
