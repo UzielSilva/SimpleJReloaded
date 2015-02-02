@@ -20,10 +20,7 @@
 package com.simplej.language.interpreter;
 
 import com.simplej.language.builtin.*;
-import com.simplej.language.compiler.*;
 import com.simplej.language.vm.*;
-
-import antlr.*;
 
 import java.io.*;
 import java.util.*;
@@ -144,7 +141,7 @@ public class Interpreter {
         try {
             Reader reader =
                 new InputStreamReader(getClass().getResourceAsStream(
-                            "/com/simplej/language/builtin/_builtin_utils.sj"));
+                        "/com.simplej.language/builtin/_builtin_utils.sj"));
             reader = new BufferedReader(reader);
             SimpleJCode code =
                 com.simplej.language.compiler.Compiler.compileProgram(reader,

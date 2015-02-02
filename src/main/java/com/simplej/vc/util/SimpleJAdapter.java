@@ -27,7 +27,6 @@ import com.simplej.language.vm.*;
 import antlr.SemanticException;
 
 import java.io.*;
-import java.util.*;
 
 public class SimpleJAdapter implements VBI, SFI, Runnable {
 
@@ -208,7 +207,7 @@ public class SimpleJAdapter implements VBI, SFI, Runnable {
         try {
             Reader reader =
                 new InputStreamReader(getClass().getResourceAsStream(
-                                        "/com/simplej/vc/util/_iavc_utils.sj"));
+                        "/com/simplej/vc/util/_iavc_utils.sj"));
             reader = new BufferedReader(reader);
             SimpleJCode code =
                 com.simplej.language.compiler.Compiler.compileProgram(reader,
