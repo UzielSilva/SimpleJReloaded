@@ -52,6 +52,7 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <phase>validate</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -92,7 +93,6 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${basedir}/target/classes</outputDirectory>
-                            <includeEmptyDirs>true</includeEmptyDirs>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/src/assembly</directory>
@@ -108,5 +108,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
