@@ -32,10 +32,11 @@ public class SelectorFX implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        String[] s = {"Nivel 1","Nivel 2","Nivel 3"};
+        String[] s = {"C:/Users/Uziel/simplej/projects/Nivel_01",
+                "C:/Users/Uziel/simplej/projects/Nivel_02",
+                "C:/Users/Uziel/simplej/projects/Nivel_03"};
         ObservableList<String> projects = FXCollections.observableArrayList(s);
         projectList.setItems(projects);
-        newProject.setText("Ola k ase");
     }
 
 }

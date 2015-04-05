@@ -4,7 +4,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,13 +38,14 @@ public class Main extends Application {
     }
     @Override
     public void start(Stage primaryStage) throws Exception{
-
         init();
         String selectorPath = config.getProperty("fxml.selector.path");
         Parent root = FXMLLoader.load(getClass().getResource(selectorPath));
-        //primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setTitle("Selector");
-        primaryStage.setScene(new Scene(root));
+        Scene scene = new Scene(root);
+        scene.setFill(Color.TRANSPARENT);
+        primaryStage.setScene(scene);
         SelectorFX.setStage(primaryStage);
         primaryStage.show();
     }

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
@@ -7,30 +11,59 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.simplej.vc.util.SelectorFX">
-   <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <SplitPane dividerPositions="0.5" layoutX="226.0" layoutY="186.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+<StackPane id="glass" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="680.0" stylesheets="@SelectorFX.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.simplej.vc.util.SelectorFX">
+   <children>
+      <BorderPane id="canvas" fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+         <bottom>
+            <Pane id="bottom" prefHeight="65.0" prefWidth="601.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button id="new" layoutX="19.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="New Project" />
+                  <Button id="search" layoutX="130.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="Search project" />
+                  <Button id="go" layoutX="495.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="84.0" text="Go!" />
+                  <Button id="go" fx:id="cancel" layoutX="405.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="84.0" text="Cancel" />
+               </children>
+            </Pane>
+         </bottom>
+         <top>
+            <Pane id="title" prefHeight="84.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="13.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@logo.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="231.0" layoutY="20.0" prefHeight="53.0" prefWidth="222.0" stylesheets="@SelectorFX.css" text="Select your project:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </top>
+         <center>
+            <HBox prefHeight="251.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ListView id="list" fx:id="projectList" prefHeight="250.0" prefWidth="366.0" />
+                  <Pane id="description" prefHeight="250.0" prefWidth="234.0">
                      <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@logo.png" />
-                           </image>
-                        </ImageView>
-                        <TextField fx:id="newProject" layoutX="102.0" layoutY="117.0" prefHeight="25.0" prefWidth="482.0" />
+                        <Label layoutX="10.0" layoutY="131.0" text="Name:" />
+                        <Label layoutX="11.0" layoutY="165.0" text="Description:" />
+                        <Label layoutX="27.0" layoutY="148.0" prefHeight="17.0" prefWidth="181.0" text="Nivel_01" />
+                        <Label layoutX="27.0" layoutY="182.0" prefHeight="54.0" prefWidth="179.0" text="Proyecto del Nivel 1 del libro: &quot;Cómo crear tu propio videojuego&quot;" wrapText="true" />
+                        <StackPane layoutX="19.0" layoutY="10.0" prefHeight="98.0" prefWidth="173.0">
+                           <children>
+                              <ImageView fitHeight="105.0" fitWidth="188.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@default.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </StackPane>
                      </children>
-                  </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                     <children>
-                        <ListView fx:id="projectList" prefHeight="196.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-              </items>
-            </SplitPane>
-         </children>
-      </AnchorPane>
-   </center>
-</BorderPane>
+                  </Pane>
+               </children>
+            </HBox>
+         </center>
+      </BorderPane>
+   </children>
+</StackPane>
