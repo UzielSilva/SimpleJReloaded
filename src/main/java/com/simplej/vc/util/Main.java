@@ -6,6 +6,7 @@ package com.simplej.vc.util;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
@@ -71,8 +72,10 @@ public class Main extends Application {
                 System.exit(2);
             }
         }
-        SelectorFX.setStage(primaryStage);
-        primaryStage.show();
+        Stage select = new Stage();
+        select.initModality(Modality.APPLICATION_MODAL);
+        SelectorFX.setStage(select);
+        select.showAndWait();
     }
     public static void main(String[] args) {
         launch(args);
