@@ -20,7 +20,7 @@
                   <Button id="new" layoutX="19.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="New Project" />
                   <Button id="search" layoutX="130.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="Search project" />
                   <Button id="go" layoutX="495.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="84.0" text="Go!" />
-                  <Button id="go" fx:id="cancel" layoutX="405.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="84.0" text="Cancel" />
+                  <Button id="go" fx:id="cancel" layoutX="405.0" layoutY="20.0" mnemonicParsing="false" onAction="#cancelAction" prefHeight="25.0" prefWidth="84.0" text="Cancel" />
                </children>
             </Pane>
          </bottom>

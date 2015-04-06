@@ -34,6 +34,9 @@
     -fx-background-color: #ffffff;
     -fx-background-radius: 10 10 0 0;
 }
+#title Label{
+    -fx-effect: dropshadow(gaussian, gray, 10, 0, 0, 0);
+}
 #bottom{
     -fx-background-color: #999999;
     -fx-background-radius: 0 0 10 10;
