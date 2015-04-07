@@ -10,9 +10,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.apache.commons.io.IOUtils;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.*;
 
+import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -31,7 +35,7 @@ class ProjectCell extends ListCell<String> {
     String lastItem;
     public String projectName;
 
-    public ProjectCell(ListView<String> parent,Stage selectorStage,Consumer actionActivate) {
+    public ProjectCell(Label noProjects, ListView<String> parent,Stage selectorStage,Consumer actionActivate) {
         super();
         this.parent = parent;
         this.selectorStage = selectorStage;
@@ -64,7 +68,45 @@ class ProjectCell extends ListCell<String> {
                     .actions(org.controlsfx.dialog.Dialog.ACTION_YES, org.controlsfx.dialog.Dialog.ACTION_NO)
                     .showConfirm();
             if (action.equals(org.controlsfx.dialog.Dialog.ACTION_YES)) {
+                String simpleJTemporary = System.getProperty("simpleJ.home");
+                if (simpleJTemporary == null) {
+                    String home = System.getProperty("user.home");
+                    simpleJTemporary = home + File.separator + Main.config.getProperty("selector.temporary.path");
+                }
+                try {
+                    File f = new File(simpleJTemporary);
+                    if(!f.exists()){
+                        f.createNewFile();
+                    }
+                    String content = IOUtils.toString(new FileInputStream(f.getAbsolutePath()), "UTF-8");
+                    List<String> files = Arrays.asList(content.split(","));
+                    if(files.contains(pathLabel.getText())){
+                        String listString = "";
+
+                        for (String s : files)
+                        {
+                            if(s.compareTo(pathLabel.getText()) != 0)
+                                listString += s + ",";
+                        }
+                        if(listString.compareTo("") != 0)
+                            listString = listString.substring(0,listString.length() - 1);
+                        Writer writer = new BufferedWriter(new OutputStreamWriter(
+                                new FileOutputStream(f.getAbsolutePath()), "utf-8"));
+                        writer.write(listString);
+                        writer.close();
+                    }
+                } catch (IOException e) {
+                    Dialogs.create()
+                            .owner(selectorStage)
+                            .title("SimpleJ")
+                            .masthead("Error loading temporary files.")
+                            .message("Couldn't load temporary projects.")
+                            .showException(e);
+                }
                 parent.getItems().remove(this.pathLabel.getText());
+                if(parent.getItems().size() == 0){
+                    noProjects.setVisible(true);
+                }
             }
         });
 
@@ -88,7 +130,7 @@ class ProjectCell extends ListCell<String> {
         } else {
             lastItem = item;
             pathLabel.setText(item!=null ? item : "<null>");
-            titleLabel.setText(item!=null ? item.split("/")[item.split("/").length - 1] : "<null>");
+            titleLabel.setText(item!=null ? item.split("\\\\|/")[item.split("\\\\|/").length - 1] : "<null>");
             setGraphic(hbox);
         }
     }
