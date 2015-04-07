@@ -2,88 +2,30 @@ package com.simplej.vc.util;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Callback;
-import javafx.scene.image.Image;
-import org.controlsfx.dialog.Dialogs;
+import org.controlsfx.dialog.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ResourceBundle;
 
-/**
- * Created by Uziel on 06/04/2015.
- */
-
-class ProjectCell extends ListCell<String> {
-    HBox hbox = new HBox();
-    VBox vbox = new VBox();
-    Label pathLabel = new Label("(empty)");
-    Label titleLabel = new Label("(empty)");
-    Pane pane = new Pane();
-    Button button = new Button();
-    String lastItem;
-
-    public ProjectCell() {
-        super();
-        String path = Main.config.getProperty("fxml.images.path");
-        Image image = new Image(Main.class.getResourceAsStream(String.format(path + "/%s", "recycle_bin_full.png")));
-        button.setGraphic(new ImageView(image));
-        button.setMinSize(22, 22);
-        button.setMaxSize(22, 22);
-        button.setPrefSize(22, 22);
-        pathLabel.setMaxWidth(300);
-        pathLabel.setTextOverrun(OverrunStyle.CENTER_WORD_ELLIPSIS);
-
-        vbox.getChildren().addAll(titleLabel, pathLabel);
-        hbox.getChildren().addAll(vbox, pane, button);
-
-        titleLabel.getStyleClass().add("title-label");
-        pathLabel.getStyleClass().add("path-label");
-
-        HBox.setHgrow(pane, Priority.ALWAYS);
-
-        button.setOnAction(event -> System.out.println(lastItem + " : " + event));
-    }
-
-    @Override
-    protected void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
-        setText(null);  // No text in label of super class
-        if (empty) {
-            lastItem = null;
-            setGraphic(null);
-        } else {
-            lastItem = item;
-            pathLabel.setText(item!=null ? item : "<null>");
-            titleLabel.setText(item!=null ? item.split("/")[item.split("/").length - 1] : "<null>");
-            setGraphic(hbox);
-        }
-    }
-}
-
 public class SelectorFX implements Initializable {
+
+    private static double xOffset = 0;
+    private static double yOffset = 0;
 
     @FXML
     private ListView<String> projectList;
@@ -139,6 +81,7 @@ public class SelectorFX implements Initializable {
     }
     @FXML
     private void cancelAction(){
+        result = "";
         stage.close();
     }
     @FXML
@@ -156,7 +99,7 @@ public class SelectorFX implements Initializable {
         }
         Dialogs.create()
                 .owner(stage)
-                .title("SimpleJ DevKit")
+                .title("SimpleJ")
                 .masthead("Not a valid directory.")
                 .message(
                         "Please confirm that directory exists and " +
@@ -194,23 +137,30 @@ public class SelectorFX implements Initializable {
 
     private void readRecentProjects(ListView<String> projectList) {
 
-//        ObservableList<String> list = FXCollections.observableArrayList(
-//                "C:/Users/Uziel/simplej/projects/ChooxRescueasfasdfasdf",
-//                "C:/Users/Uziel/simplej/projects/ChooxRescue",
-//                "C:/Users/Uziel/simplej/projects/ChooxRescue",
-//                "C:/Users/Uziel/simplej/projects/ChooxRescue",
-//                "C:/Users/Uziel/simplej/projects/ChooxRescue",
-//                "C:/Users/Uziel/simplej/projects/ChooxRescue",
-//                "C:/Users/Uziel/simplej/projects/ChooxRescue"
-//                );
-//        projectList.setItems(list);
+        ObservableList<String> list = FXCollections.observableArrayList(
+                "C:/Users/Uziel/simplej/projects/ChooxRescueasfasdfasdf",
+                "C:/Users/Uziel/simplej/projects/ChooxRescue",
+                "C:/Users/Uziel/simplej/projects/ChooxRescue",
+                "C:/Users/Uziel/simplej/projects/ChooxRescue",
+                "C:/Users/Uziel/simplej/projects/ChooxRescue",
+                "C:/Users/Uziel/simplej/projects/ChooxRescue",
+                "C:/Users/Uziel/simplej/projects/ChooxRescue"
+                );
+        projectList.setItems(list);
 
-        // Create a MenuItem and place it in a ContextMenu
-        MenuItem helloWorld = new MenuItem("Hello World!");
-        ContextMenu contextMenu = new ContextMenu(helloWorld);
-
-        // sets a cell factory on the ListView telling it to use the previously-created ContextMenu (uses default cell factory)
-        projectList.setCellFactory(param -> new ProjectCell());
+        projectList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            result = observable.getValue();
+            contentNameLabel.setText(result.split("/")[result.split("/").length - 1]);
+        });
+        projectList.setCellFactory(param -> new ProjectCell(projectList, stage,
+            mouseEvent -> {
+                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                    if (mouseEvent.getClickCount() == 2) {
+                        goAction();
+                    }
+                }
+            })
+        );
 
     }
 
@@ -235,12 +185,21 @@ public class SelectorFX implements Initializable {
         } catch (IOException e) {
             Dialogs.create()
                     .owner(stage)
-                    .title("SimpleJ DevKit")
+                    .title("SimpleJ")
                     .masthead("Error loading program.")
                     .message("Couldn't load resources.")
                     .showException(e);
             System.exit(2);
         }
+
+        root.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        root.setOnMouseDragged(event -> {
+            stage.setX(event.getScreenX() - xOffset);
+            stage.setY(event.getScreenY() - yOffset);
+        });
 
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);

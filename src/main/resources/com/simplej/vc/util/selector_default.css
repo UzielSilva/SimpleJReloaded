@@ -48,7 +48,7 @@
     -fx-background-insets: 0,1,2,0;
 }
 .list-cell{
-    -fx-cell-size: 31;
+    -fx-cell-size: 42;
 }
 .list-cell HBox{
     -fx-alignment: center;

@@ -77,7 +77,7 @@ public class Main extends Application {
                 System.exit(2);
             }
         }
-        SelectorFX.select(SimpleJType.DEVKIT);
+        System.out.print(SelectorFX.select(SimpleJType.DEVKIT));
     }
     public static void main(String[] args) {
         launch(args);
