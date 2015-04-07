@@ -1,10 +1,10 @@
 package com.simplej.vc.util;
 
 import javafx.scene.control.*;
-import javafx.scene.control.Dialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.*;
 
-import javafx.event.EventHandler;
+import java.util.function.Consumer;
 
 /**
  * Created by Uziel on 06/04/2015.
@@ -31,7 +31,7 @@ class ProjectCell extends ListCell<String> {
     String lastItem;
     public String projectName;
 
-    public ProjectCell(ListView<String> parent,Stage selectorStage,EventHandler<MouseEvent> additionalEvent) {
+    public ProjectCell(ListView<String> parent,Stage selectorStage,Consumer actionActivate) {
         super();
         this.parent = parent;
         this.selectorStage = selectorStage;
@@ -69,7 +69,11 @@ class ProjectCell extends ListCell<String> {
         });
 
         this.setOnMouseClicked(mouseEvent -> {
-            additionalEvent.handle(mouseEvent);
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if (mouseEvent.getClickCount() == 2) {
+                    actionActivate.accept(mouseEvent);
+                }
+            }
         });
 
     }

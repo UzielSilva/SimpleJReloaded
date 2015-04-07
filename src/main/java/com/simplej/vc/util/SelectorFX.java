@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.controlsfx.dialog.*;
 
+import javafx.scene.input.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -89,6 +91,13 @@ public class SelectorFX implements Initializable {
         stage.close();
     }
 
+    @FXML
+    private void listProjectPressed(KeyEvent keyEvent){
+        if (keyEvent.getCode().equals(KeyCode.ENTER)){
+            goAction();
+        }
+    }
+
     private boolean validateDirectory(String path){
         File f = new File(path);
         if(f.exists() && f.isDirectory()){
@@ -153,16 +162,12 @@ public class SelectorFX implements Initializable {
             contentNameLabel.setText(result.split("/")[result.split("/").length - 1]);
         });
         projectList.setCellFactory(param -> new ProjectCell(projectList, stage,
-            mouseEvent -> {
-                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                    if (mouseEvent.getClickCount() == 2) {
-                        goAction();
-                    }
-                }
-            })
+            event -> goAction())
         );
 
     }
+
+
 
     public void show(){
         stage.showAndWait();

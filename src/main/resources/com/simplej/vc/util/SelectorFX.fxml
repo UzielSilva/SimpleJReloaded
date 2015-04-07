@@ -50,7 +50,7 @@
                <children>
                   <Pane prefHeight="251.0" prefWidth="366.0">
                      <children>
-                        <ListView id="list" fx:id="projectList" prefHeight="250.0" prefWidth="366.0" />
+                        <ListView id="list" fx:id="projectList" onKeyPressed="#listProjectPressed" prefHeight="250.0" prefWidth="366.0" />
                         <Label fx:id="noProjectsLabel" layoutX="52.0" layoutY="59.0" prefHeight="119.0" prefWidth="283.0" text="No recent projects yet." textAlignment="CENTER" textFill="#725c5c" wrapText="true">
                            <font>
                               <Font name="Calibri Italic" size="32.0" />
