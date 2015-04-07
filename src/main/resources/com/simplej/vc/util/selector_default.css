@@ -1,0 +1,94 @@
+#glass {
+    -fx-background-color: rgba(255, 255, 255, 0);
+    -fx-background-insets: 40;
+    -fx-effect: dropshadow(gaussian, black, 40, 0, 0, 0);
+}
+#description {
+    -fx-background-color:
+        #090a0c,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-insets: 0,1,2,0;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Arial";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-font-size: 12px;
+    -fx-padding: 10 20 10 20;
+}
+#description Label{
+    -fx-text-fill: white;
+}
+#description StackPane{
+    -fx-padding: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+    -fx-background-radius: 5;
+    -fx-background-color: #333;
+}
+#canvas{
+    -fx-alignment: center;
+    -fx-background-radius: 10 10 10 10;
+}
+#title{
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10 10 0 0;
+}
+#title Label{
+    -fx-effect: dropshadow(gaussian, gray, 10, 0, 0, 0);
+}
+#bottom{
+    -fx-background-color: #999999;
+    -fx-background-radius: 0 0 10 10;
+}
+#list{
+    -fx-focus-color: transparent;
+    -fx-background-color:
+        #dddddd;
+    -fx-background-insets: 0,1,2,0;
+}
+.list-cell{
+    -fx-cell-size: 31;
+}
+.list-cell HBox{
+    -fx-alignment: center;
+}
+.list-cell:odd{
+    -fx-background-color: #E5D7E6;
+}
+.list-cell:selected{
+    -fx-background-color: #592E5E;
+}
+.list-cell:selected .title-label{
+    -fx-text-fill: white;
+}
+.list-cell:selected .path-label{
+    -fx-text-fill: white;
+}
+.list-cell .title-label{
+    -fx-text-fill: #6C5286;
+    -fx-font-weight: bold;
+    -fx-font-size: 13;
+}
+.list-cell .path-label{
+    -fx-text-fill: #6C5286;
+    -fx-font-style: italic;
+}
+.list-cell Button{
+    -fx-background-color: rgba(255, 255, 255, 0);
+    -fx-background-radius: 16.4, 15;
+    -fx-background-insets: -1.4, 0;
+    visibility: hidden;
+}
+.list-cell:hover Button{
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+    visibility: visible;
+}
+.list-cell:hover Button:hover{
+    -fx-effect: dropshadow(three-pass-box, rgba(128,0,128,0.8), 10, 0, 0, 0);
+    visibility: visible;
+}
+.list-cell:hover:selected Button:hover{
+    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.8), 10, 0, 0, 0);
+    visibility: visible;
+}

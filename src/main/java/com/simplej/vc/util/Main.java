@@ -19,16 +19,21 @@ import java.util.Properties;
 
 public class Main extends Application {
     public static final Properties config;
+    public static final Properties language;
 
     static {
         config = new Properties();
+        language = new Properties();
         try {
-            InputStream stream = Main.class.getResourceAsStream("/com/simplej/core.properties");
+            InputStream coreStream = Main.class.getResourceAsStream("/com/simplej/core.properties");
+            InputStream langStream = Main.class.getResourceAsStream("/com/simplej/simplej_es_MX.properties");
             try {
-                config.load(stream);
+                config.load(coreStream);
+                language.load(langStream);
             }
             finally {
-                stream.close();
+                coreStream.close();
+                langStream.close();
             }
         }
         catch (IOException ex) {
@@ -72,10 +77,7 @@ public class Main extends Application {
                 System.exit(2);
             }
         }
-        Stage select = new Stage();
-        select.initModality(Modality.APPLICATION_MODAL);
-        SelectorFX.setStage(select);
-        select.showAndWait();
+        SelectorFX.select(SimpleJType.DEVKIT);
     }
     public static void main(String[] args) {
         launch(args);
