@@ -55,26 +55,35 @@ public class Environment {
             file.mkdir();
     }
 
+    @Deprecated
     public String toSavePath(String gameName) {
         return simpleJSaves + File.separator + gameName + ".data";
     }
 
+    @Deprecated
     public String toGamePath(String gameName) {
         return simpleJGames + File.separator + gameName + ".cart";
     }
 
+    public static String toProjectName(String projectPath){
+        return projectPath.substring(projectPath.lastIndexOf(File.separator) + 1);
+    }
+
+    @Deprecated
     public String toProjectPath(String projectName) {
         return simpleJProjects + File.separator + projectName;
     }
 
-    public String toProjectFile(String projectName, String fileName) {
-        return toProjectPath(projectName) + File.separator + fileName;
+    public String toProjectFile(String projectPath, String fileName) {
+        return projectPath + File.separator + fileName;
     }
 
+    @Deprecated
     public String getProjectsPath() {
         return simpleJProjects;
     }
 
+    @Deprecated
     public String[] getGameNames() {
         File file = new File(simpleJGames);
         String[] filenames = file.list();
@@ -88,11 +97,12 @@ public class Environment {
         return (String[]) names.toArray(new String[names.size()]);
     }
 
-    public boolean gameExists(String gameName) {
-        File file = new File(toGamePath(gameName));
+    public boolean gameExists(String gamePath) {
+        File file = new File(gamePath);
         return file.exists();
     }
 
+    @Deprecated
     public String[] getProjectNames() {
         File file = new File(simpleJProjects);
         String[] filenames = file.list();
@@ -106,8 +116,8 @@ public class Environment {
         return (String[]) names.toArray(new String[names.size()]);
     }
 
-    public String[] getProjectFilenames(String projectName, String ext) {
-        File file = new File(toProjectPath(projectName));
+    public String[] getProjectFilenames(String projectPath, String ext) {
+        File file = new File(projectPath);
         String[] filenames = file.list();
         List names = new ArrayList();
         for (int i = 0; i < filenames.length; i++) {
@@ -119,8 +129,8 @@ public class Environment {
         return (String[]) names.toArray(new String[names.size()]);
     }
 
-    public String[] getProjectFilenames(String projectName) {
-        File file = new File(toProjectPath(projectName));
+    public String[] getProjectFilenames(String projectPath) {
+        File file = new File(projectPath);
         String[] filenames = file.list();
         List names = new ArrayList();
         for (int i = 0; i < filenames.length; i++) {
@@ -131,10 +141,12 @@ public class Environment {
         return (String[]) names.toArray(new String[names.size()]);
     }
 
-    public boolean projectExists(String projectName) {
-        File file = new File(toProjectPath(projectName));
+    public boolean projectExists(String projectPath) {
+        File file = new File(projectPath);
         return file.exists();
     }
+
+    // TODO: review later
 
     public String importProject(String host) throws IOException {
         Socket socket = new Socket(host, 8080);
@@ -160,14 +172,15 @@ public class Environment {
         return projectName;
     }
     
-    public void createProject(String projectName) throws IOException {
-        File file = new File(toProjectPath(projectName));
+    public void createProject(String projectPath) throws IOException {
+        File file = new File(projectPath);
         file.mkdir();
         FileOutputStream fos = 
-            new FileOutputStream(toProjectFile(projectName, "main.sj"));
+            new FileOutputStream(toProjectFile(projectPath, "main.sj"));
         fos.close();
     }
-    
+
+    @Deprecated
     public void extractProjects(String archiveName) throws IOException {
         byte[] buffer = new byte[4096];
         Set newProjects = new HashSet();
@@ -198,6 +211,7 @@ public class Environment {
         }
     }
 
+    @Deprecated
     public void extractGames(String archiveName) throws IOException {
         byte[] buffer = new byte[4096];
         InputStream is = getClass().getResourceAsStream(archiveName);
