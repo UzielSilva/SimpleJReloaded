@@ -1,5 +1,6 @@
 package com.simplej.vc.util;
 
+import com.simplej.vc.env.Environment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,8 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
@@ -23,8 +22,6 @@ import javafx.scene.input.KeyEvent;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -93,11 +90,13 @@ public class SelectorFX implements Initializable {
     }
     @FXML
     private void goAction(){
-        String simpleJTemporary = System.getProperty("simpleJ.home");
-        if (simpleJTemporary == null) {
+        String simpleJHome = System.getProperty("simpleJ.home");
+        if (simpleJHome == null) {
             String home = System.getProperty("user.home");
-            simpleJTemporary = home + File.separator + Main.config.getProperty("selector.temporary.path");
+            simpleJHome = home + File.separator + Main.config.getProperty("folder.name");
         }
+        String simpleJTemporary = simpleJHome + File.separator + Main.config.getProperty("selector.temporary.name");
+
         try {
             File f = new File(simpleJTemporary);
             if(!f.exists()){
@@ -182,12 +181,14 @@ public class SelectorFX implements Initializable {
 
     private void readRecentProjects(ListView<String> projectList) {
 
-        String simpleJTemporary = System.getProperty("simpleJ.home");
+        String simpleJHome = System.getProperty("simpleJ.home");
         String[] files;
-        if (simpleJTemporary == null) {
+        if (simpleJHome == null) {
             String home = System.getProperty("user.home");
-            simpleJTemporary = home + File.separator + Main.config.getProperty("selector.temporary.path");
+            simpleJHome = home + File.separator + Main.config.getProperty("folder.name");
         }
+        String simpleJTemporary = simpleJHome + File.separator + Main.config.getProperty("selector.temporary.name");
+
         try {
             File f = new File(simpleJTemporary);
             if(!f.exists()){
@@ -211,7 +212,7 @@ public class SelectorFX implements Initializable {
 
         projectList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             result = observable.getValue();
-            contentNameLabel.setText(result != null ? result.split("\\\\|/")[result.split("\\\\|/").length - 1]:null);
+            contentNameLabel.setText(result != null ? Environment.toProjectName(result):null);
         });
         projectList.setCellFactory(param -> new ProjectCell(noProjectsLabel,projectList, stage,
                         event -> goAction())
