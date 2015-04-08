@@ -1,9 +1,9 @@
 package com.simplej.vc.util;
 
+import com.simplej.vc.env.Environment;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -37,14 +37,18 @@ class ProjectCell extends ListCell<String> {
 
     public ProjectCell(Label noProjects, ListView<String> parent,Stage selectorStage,Consumer actionActivate) {
         super();
+
         this.parent = parent;
         this.selectorStage = selectorStage;
+
         String path = Main.config.getProperty("fxml.images.path");
         Image image = new Image(Main.class.getResourceAsStream(String.format(path + "/%s", "recycle_bin_full.png")));
+
         button.setGraphic(new ImageView(image));
         button.setMinSize(22, 22);
         button.setMaxSize(22, 22);
         button.setPrefSize(22, 22);
+
         pathLabel.setMaxWidth(300);
         pathLabel.setTextOverrun(OverrunStyle.CENTER_WORD_ELLIPSIS);
 
@@ -68,11 +72,12 @@ class ProjectCell extends ListCell<String> {
                     .actions(org.controlsfx.dialog.Dialog.ACTION_YES, org.controlsfx.dialog.Dialog.ACTION_NO)
                     .showConfirm();
             if (action.equals(org.controlsfx.dialog.Dialog.ACTION_YES)) {
-                String simpleJTemporary = System.getProperty("simpleJ.home");
-                if (simpleJTemporary == null) {
+                String simpleJHome = System.getProperty("simpleJ.home");
+                if (simpleJHome == null) {
                     String home = System.getProperty("user.home");
-                    simpleJTemporary = home + File.separator + Main.config.getProperty("selector.temporary.path");
+                    simpleJHome = home + File.separator + Main.config.getProperty("folder.name");
                 }
+                String simpleJTemporary = simpleJHome + File.separator + Main.config.getProperty("selector.temporary.name");
                 try {
                     File f = new File(simpleJTemporary);
                     if(!f.exists()){
@@ -130,7 +135,7 @@ class ProjectCell extends ListCell<String> {
         } else {
             lastItem = item;
             pathLabel.setText(item!=null ? item : "<null>");
-            titleLabel.setText(item!=null ? item.split("\\\\|/")[item.split("\\\\|/").length - 1] : "<null>");
+            titleLabel.setText(item!=null ? Environment.toProjectName(item) : "<null>");
             setGraphic(hbox);
         }
     }
