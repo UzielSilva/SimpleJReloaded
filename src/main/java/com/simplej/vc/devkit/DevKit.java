@@ -299,7 +299,7 @@ public class DevKit extends JFrame implements ExceptionHandler, ViewerEnv {
         editorFileName = fileName;
         editor.setText("");
         Document document = editor.getDocument();
-        FileReader in = new FileReader(environment.toProjectFile(projectName,
+        FileReader in = new FileReader(environment.toProjectFile(Environment.toProjectPath(projectName),
                                                                  fileName));
         char[] buff = new char[4096];
         int nch;
@@ -384,7 +384,7 @@ public class DevKit extends JFrame implements ExceptionHandler, ViewerEnv {
     private void saveSourceAs(String fileName) throws IOException {
         if (!fileName.endsWith(".sj"))
             fileName = fileName + ".sj";
-        String path = environment.toProjectFile(projectName, fileName);
+        String path = environment.toProjectFile(Environment.toProjectPath(projectName), fileName);
         if (!fileName.equals(editorFileName)) {
             if (new File(path).exists()) {
                 int option = JOptionPane.showConfirmDialog
@@ -548,8 +548,8 @@ public class DevKit extends JFrame implements ExceptionHandler, ViewerEnv {
              "or type the name of a new project -->");
         if (projectName.length() == 0)
             return null;
-        if (!env.projectExists(projectName))
-            env.createProject(projectName);
+        if (!env.projectExists(Environment.toProjectPath(projectName)))
+            env.createProject(Environment.toProjectPath(projectName));
         return projectName;
     }
 

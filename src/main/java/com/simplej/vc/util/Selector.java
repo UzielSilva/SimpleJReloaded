@@ -19,6 +19,8 @@
 
 package com.simplej.vc.util;
 
+import com.simplej.vc.env.Environment;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -37,8 +39,8 @@ public class Selector {
         JPanel pn = new JPanel();
         c.add(pn);
         pn.setBorder(BorderFactory.createCompoundBorder(
-                              BorderFactory.createRaisedBevelBorder(),
-                              BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+                BorderFactory.createRaisedBevelBorder(),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         pn.setLayout(new BoxLayout(pn, BoxLayout.Y_AXIS));
         JLabel logo = new JLabel(createIcon("logo.png"));
         logo.setOpaque(false);
@@ -67,31 +69,31 @@ public class Selector {
         panel.add(cancelBtn);
 
         jl.addListSelectionListener(new ListSelectionListener() {
-                public void valueChanged(ListSelectionEvent e) {
-                    name.setText((String) jl.getSelectedValue());
-                }
-            });
+            public void valueChanged(ListSelectionEvent e) {
+                name.setText((String) jl.getSelectedValue());
+            }
+        });
         jl.addMouseListener(new MouseAdapter() {
-        		   public void mouseClicked(MouseEvent e) {
-        		        if (e.getClickCount() == 2) {
-                                    name.setText
-                                        ((String) jl.getSelectedValue());
-                                    jd.dispose();
-        		        }
-        		   }
-            });	
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    name.setText
+                            ((String) jl.getSelectedValue());
+                    jd.dispose();
+                }
+            }
+        });
         name.getDocument().addDocumentListener(new DocumentListener() {
-                public void insertUpdate(DocumentEvent e) {
-                    okBtn.setEnabled(name.getText().length() > 0);
-                }
+            public void insertUpdate(DocumentEvent e) {
+                okBtn.setEnabled(name.getText().length() > 0);
+            }
 
-                public void removeUpdate(DocumentEvent e) {
-                    okBtn.setEnabled(name.getText().length() > 0);
-                }
+            public void removeUpdate(DocumentEvent e) {
+                okBtn.setEnabled(name.getText().length() > 0);
+            }
 
-                public void changedUpdate(DocumentEvent e) {
-                }
-            });
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
         name.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     jd.dispose();
@@ -103,18 +105,18 @@ public class Selector {
                 }
             });
         cancelBtn.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    name.setText("");
-                    jd.dispose();
-                }
-            });
+            public void actionPerformed(ActionEvent e) {
+                name.setText("");
+                jd.dispose();
+            }
+        });
         jd.pack();
         jd.setResizable(false);
         Dimension dim = jd.getSize();
         jd.setLocation(new Point((1024 - dim.width) / 2,
-                                 (768 - dim.height) / 2));
+                (768 - dim.height) / 2));
         jd.setVisible(true);
-        return name.getText();
+        return Environment.toProjectName(name.getText());
     }
 
     public static String select(String[] options, String title, 
@@ -190,7 +192,7 @@ public class Selector {
         jd.setLocation(new Point((1024 - dim.width) / 2,
                                  (768 - dim.height) / 2));
         jd.setVisible(true);
-        return name.getText();
+        return Environment.toProjectName(name.getText());
     }
 
     private static Icon createIcon(String path) {
