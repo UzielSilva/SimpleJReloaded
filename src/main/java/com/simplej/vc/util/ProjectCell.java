@@ -79,7 +79,11 @@ class ProjectCell extends ListCell<String> {
                 }
                 String simpleJTemporary = simpleJHome + File.separator + Main.config.getProperty("selector.temporary.name");
                 try {
-                    File f = new File(simpleJTemporary);
+                    File f = new File(simpleJHome);
+                    if(!f.exists()){
+                        f.mkdir();
+                    }
+                    f = new File(simpleJTemporary);
                     if(!f.exists()){
                         f.createNewFile();
                     }
