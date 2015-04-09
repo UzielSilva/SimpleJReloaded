@@ -26,11 +26,35 @@ import java.util.zip.*;
 
 public class Environment {
     
-    private String simpleJSaves;
+    private static String simpleJSaves;
 
-    private String simpleJGames;
+    private static String simpleJGames;
 
-    private String simpleJProjects;
+    private static String simpleJProjects;
+
+    static {
+        String simpleJHome = System.getProperty("simpleJ.home");
+        if (simpleJHome == null) {
+            String home = System.getProperty("user.home");
+            simpleJHome = home + File.separator + "simpleJ";
+        }
+        File file = new File(simpleJHome);
+        if (!file.exists())
+            file.mkdir();
+        simpleJSaves = simpleJHome + File.separator + "saves";
+        file = new File(simpleJSaves);
+        if (!file.exists())
+            file.mkdir();
+        simpleJGames = simpleJHome + File.separator + "games";
+        file = new File(simpleJGames);
+        if (!file.exists())
+            file.mkdir();
+        simpleJProjects = simpleJHome + File.separator + "projects";
+        file = new File(simpleJProjects);
+        if (!file.exists())
+            file.mkdir();
+    }
+
 
     public Environment() throws IOException {
         String simpleJHome = System.getProperty("simpleJ.home");
@@ -56,12 +80,12 @@ public class Environment {
     }
 
     @Deprecated
-    public String toSavePath(String gameName) {
+    public static String toSavePath(String gameName) {
         return simpleJSaves + File.separator + gameName + ".data";
     }
 
     @Deprecated
-    public String toGamePath(String gameName) {
+    public static String toGamePath(String gameName) {
         return simpleJGames + File.separator + gameName + ".cart";
     }
 
@@ -70,21 +94,21 @@ public class Environment {
     }
 
     @Deprecated
-    public String toProjectPath(String projectName) {
+    public static String toProjectPath(String projectName) {
         return simpleJProjects + File.separator + projectName;
     }
 
-    public String toProjectFile(String projectPath, String fileName) {
+    public static String toProjectFile(String projectPath, String fileName) {
         return projectPath + File.separator + fileName;
     }
 
     @Deprecated
-    public String getProjectsPath() {
+    public static String getProjectsPath() {
         return simpleJProjects;
     }
 
     @Deprecated
-    public String[] getGameNames() {
+    public static String[] getGameNames() {
         File file = new File(simpleJGames);
         String[] filenames = file.list();
         List names = new ArrayList();
@@ -97,13 +121,13 @@ public class Environment {
         return (String[]) names.toArray(new String[names.size()]);
     }
 
-    public boolean gameExists(String gamePath) {
+    public static boolean gameExists(String gamePath) {
         File file = new File(gamePath);
         return file.exists();
     }
 
     @Deprecated
-    public String[] getProjectNames() {
+    public static String[] getProjectNames() {
         File file = new File(simpleJProjects);
         String[] filenames = file.list();
         List names = new ArrayList();
@@ -116,7 +140,7 @@ public class Environment {
         return (String[]) names.toArray(new String[names.size()]);
     }
 
-    public String[] getProjectFilenames(String projectPath, String ext) {
+    public static String[] getProjectFilenames(String projectPath, String ext) {
         File file = new File(projectPath);
         String[] filenames = file.list();
         List names = new ArrayList();
@@ -129,7 +153,7 @@ public class Environment {
         return (String[]) names.toArray(new String[names.size()]);
     }
 
-    public String[] getProjectFilenames(String projectPath) {
+    public static String[] getProjectFilenames(String projectPath) {
         File file = new File(projectPath);
         String[] filenames = file.list();
         List names = new ArrayList();
@@ -141,14 +165,14 @@ public class Environment {
         return (String[]) names.toArray(new String[names.size()]);
     }
 
-    public boolean projectExists(String projectPath) {
+    public static boolean projectExists(String projectPath) {
         File file = new File(projectPath);
         return file.exists();
     }
 
     // TODO: review later
 
-    public String importProject(String host) throws IOException {
+    public static String importProject(String host) throws IOException {
         Socket socket = new Socket(host, 8080);
         DataInputStream in = new DataInputStream(socket.getInputStream());
         String projectName = in.readUTF();
@@ -172,7 +196,7 @@ public class Environment {
         return projectName;
     }
     
-    public void createProject(String projectPath) throws IOException {
+    public static void createProject(String projectPath) throws IOException {
         File file = new File(projectPath);
         file.mkdir();
         FileOutputStream fos = 
@@ -181,10 +205,10 @@ public class Environment {
     }
 
     @Deprecated
-    public void extractProjects(String archiveName) throws IOException {
+    public static void extractProjects(String archiveName) throws IOException {
         byte[] buffer = new byte[4096];
         Set newProjects = new HashSet();
-        InputStream is = getClass().getResourceAsStream(archiveName);
+        InputStream is = Environment.class.getResourceAsStream(archiveName);
         ZipInputStream zis = new ZipInputStream(is);
         ZipEntry entry;
         while ((entry = zis.getNextEntry()) != null) {
@@ -192,14 +216,14 @@ public class Environment {
             String projectName = getProjectName(entryName);
             if (entry.isDirectory()) {
                 if (!projectExists(projectName)) {
-                    createProject(projectName);
+                    createProject(toProjectPath(projectName));
                     newProjects.add(projectName);
                 }
             } else {
                 if (newProjects.contains(projectName)) {
                     String filename = getProjectFileName(entryName);
                     FileOutputStream fos =
-                        new FileOutputStream(toProjectFile(projectName, 
+                        new FileOutputStream(toProjectFile(toProjectPath(projectName),
                                                            filename));
                     BufferedOutputStream bos = new BufferedOutputStream(fos);
                     int n;
@@ -212,9 +236,9 @@ public class Environment {
     }
 
     @Deprecated
-    public void extractGames(String archiveName) throws IOException {
+    public static void extractGames(String archiveName) throws IOException {
         byte[] buffer = new byte[4096];
-        InputStream is = getClass().getResourceAsStream(archiveName);
+        InputStream is = Environment.class.getResourceAsStream(archiveName);
         ZipInputStream zis = new ZipInputStream(is);
         ZipEntry entry;
         while ((entry = zis.getNextEntry()) != null) {
@@ -234,15 +258,15 @@ public class Environment {
         }
     }
     
-    private String getProjectName(String entryName) {
+    private static String getProjectName(String entryName) {
         return entryName.substring(0, entryName.indexOf("/"));
     }
     
-    private String getProjectFileName(String entryName) {
+    private static String getProjectFileName(String entryName) {
         return entryName.substring(entryName.indexOf("/") + 1);
     }
 
-    private String getGameName(String entryName) {
+    private static String getGameName(String entryName) {
         return entryName.substring(0, entryName.indexOf(".cart"));
     }
     
